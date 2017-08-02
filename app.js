@@ -14,9 +14,26 @@ let app = express();
 app.use(orm.express("sqlite:///Users/sanshui/Desktop/tw-movie-theater/SQL/movies.db", {
     define: function (db, models, next) {
         models.movie = db.define("movie", {
-          img:text,
-          title:text,
-          casts:text
+          id:Number,
+          alt:String,
+          year:Number,
+          directors:String,
+          rating:String,
+          image:String,
+          title:String,
+          casts:String,
+          original_title:String
+        });
+
+        models.genre = db.define("genre", {
+          id:Number,
+          name:String
+        });
+
+        models.movie_genre = db.define("movie_genre", {
+          id:Number,
+          movie_id:Number,
+          genre_id:Number
         });
         next();
     }
