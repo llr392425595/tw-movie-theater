@@ -1,0 +1,9 @@
+
+extends layout
+
+block content
+
+
+    form#commentForm(name="addcomment",method="post",action="/comments/add")
+        input#comment(name="comment")
+        button#send(type="submit") 提交

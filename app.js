@@ -1,9 +1,12 @@
+'use strict'
+
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+
 //数据库驱动
 const orm = require('orm');
 
@@ -11,6 +14,37 @@ const index = require('./routes/index');
 
 let app = express();
 
+// link to sqlite database
+app.use(orm.express("sqlite:///home/easter/db/movies.db", {
+    define: function (db, models, next) {
+        models.genre = db.define("genre", {
+            id        : Number,
+            name      : String
+        });
+        models.movie = db.define("movie", {
+            id          : Number,
+            alt         : String,
+            year        : Number,
+            title       : String,
+            rating      : String,
+            original_title: String,
+            directors   : String,
+            casts       : String,
+            image       : String
+
+        });
+        models.movie_genre = db.define("movie_genre", {
+            id              : Number,
+            movie_id        : Number,
+            genre_id        : Number
+        });
+        models.sqlite_sequence = db.define("sqlite_sequence", {
+            name      : String,
+            seq       : String,
+        });
+        next();
+    }
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
