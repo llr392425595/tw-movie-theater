@@ -3,14 +3,15 @@ define(function (require, exports, module) {
     let service = require('./service');
     let masterPage = {
         html:{
-            content:$('.content')
+            topNav : $('#top-nav'),
+            content : $('.content')
         },
         ajax:{
             getAllGenreData : function () {
                 let allGenreData = [];
                 $.ajaxSetup({async: false});
                 $.get(service.Genre.getAllGenre(),function (data,status) {
-                    if(data.success&&status===200){
+                    if(data.data&&status==="success"){
                         allGenreData = data.data;
                     }
                 });
@@ -26,7 +27,10 @@ define(function (require, exports, module) {
             },
             navContent : function () {
                 let allGenreData = masterPage.ajax.getAllGenreData();
-                console.log(allGenreData);
+                let tplData = {};
+                tplData.navData = allGenreData;
+                let html = template('nav1',tplData);
+                masterPage.html.topNav.html(html);
             },
             listContent : function(data){
                 let tplData = data || {};

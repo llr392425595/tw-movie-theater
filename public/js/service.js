@@ -1,7 +1,7 @@
 "use strict";
 define(function (require, exports, module) {
     let service = {
-        root : 'localhost:3000/',
+        root : 'http://localhost:3000/',
         Movies : {
             //获取所有电影(分页)
             getAllMovies : function () {
