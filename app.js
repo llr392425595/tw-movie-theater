@@ -9,10 +9,23 @@ const bodyParser = require('body-parser');
 const index = require('./routes/index');
 
 let app = express();
+let appRoot = path.join(__dirname, '/');
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 //数据库驱动
 const orm = require('orm');
-app.use(orm.express("sqlite:///home/llr/db/movies.db", {
+app.use(orm.express(`sqlite://${appRoot}/public/db/movies.db`, {
     define: function (db, models, next) {
         models.Movies = db.define('movie', {
             id : Number,
@@ -41,17 +54,7 @@ app.use(orm.express("sqlite:///home/llr/db/movies.db", {
     }
 }));
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 
