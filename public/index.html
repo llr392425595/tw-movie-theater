@@ -7,7 +7,9 @@
     <meta name="description" content="全球最大的网上看电影平台">
     <meta name="keywords" content="斯沃影院,全球最大,影院,高清,在线观看,动漫,游戏">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0">
-
+    <!--pace-->
+    <link rel="stylesheet" href="lib/pace/themes/red/pace-theme-flash.css">
+    <script src="lib/pace/pace.min.js"></script>
     <!--引用库的文件-->
     <link rel="stylesheet" href="css/custom-style.css">
     <link rel="stylesheet" href="css/tooltipster.css">
@@ -16,15 +18,18 @@
     <script src="lib/jquery-3.1.1.min/jquery-3.1.1.min.js"></script>
     <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script src="lib/layer/layer.js"></script>
+    <script src="lib/laypage/laypage.js"></script>
     <script src="lib/template/template.js"></script>
+
     <script data-main="./js/master.js"  src="lib/require/require.js"></script>
 
     <!--自定义css文件与js文件-->
     <!--base文件为基本样式库,勿动-->
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/main.css">
-
     <script src="js/navagation.js"></script>
+
+
 
 </head>
 <body>
@@ -90,7 +95,7 @@
                     {{each navData as nav i}}
                     {{if i<16}}
                     <li class="main-menu-item menu-item-depth-0 menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item">
-                        <a  data-navId="{{nav.id}}" href="#" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
+                        <a  data-navId="{{nav.id}}" href="#nav{{nav.id}}" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
                     </li>
                     {{/if}}
                     {{/each}}
@@ -103,7 +108,7 @@
                             {{each navData as nav i}}
                             {{if i>=16}}
                             <li class="main-menu-item menu-item-depth-0 menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item">
-                                <a  data-navId="{{nav.id}}" href="#" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
+                                <a  data-navId="{{nav.id}}" href="#nav{{nav.id}}" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
                             </li>
                             {{/if}}
                             {{/each}}
@@ -160,7 +165,7 @@
                 <div class="row">
                     {{each moviesRow as movie i}}
                     <div class="col-md-3 col-sm-6">
-                        <a data-movieId="{{movie.id}}" class="movieItem" href="javascript:void(0)">
+                        <a data-movieId="{{movie.id}}" class="movieItem" href="#movie/{{movie.id}}">
                             <img  src="{{movie.image}}" alt="movie.title">
                         </a>
                         <p class="title">［{{movie.year}}］{{movie.title}} <span class="score">{{movie.rating}}分</span></p>
@@ -168,15 +173,10 @@
                     {{/each}}
                 </div>
             {{/each}}
-            <div class="row pageNation">
-                <ul class="pagination  pagination-lg">
-                    <li><a href="#">&laquo;</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">&raquo;</a></li>
-                </ul>
+            <div style="height: 100px;display: flex;justify-content: center;align-items: center" class="row">
+                <div id="pageNation"></div>
             </div>
+
         </div>
     </div>
 </script>

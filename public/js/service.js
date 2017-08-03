@@ -18,6 +18,9 @@ define(function (require, exports, module) {
             //根据分类id查询电影
             getMoviesByGenreId : function (genreId) {
                 return service.root + "movies/genre/" + genreId
+            },
+            getMoviesByPage : function () {
+                return service.root + "movies/page"
             }
         },
         Genre : {

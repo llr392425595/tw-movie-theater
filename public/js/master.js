@@ -21,7 +21,7 @@ define(function (require, exports, module) {
                 $.ajaxSetup({async: true});
                 return allGenreData;
             },
-            //根据类别查询电影
+            //根据类别查询电影(分页)
             getMoviesByGenreId : function (genreId) {
                 let movies = [];
                 $.ajaxSetup({async: false});
@@ -32,6 +32,32 @@ define(function (require, exports, module) {
                 });
                 $.ajaxSetup({async: true});
                 return movies;
+            },
+            //根据类别查询电影(分页)
+            getPagedMoviesByGenreId : function (genreId,curr) {
+                $.getJSON(service.Movies.getMoviesByGenreId(genreId), {
+                    page: curr || 1 //向服务端传的参数，此处只是演示
+                }, function(res){
+                    let movies = res.data.currentPageMovies;
+                    let tplData = {
+                        moviesRows:masterPage.fun.chunk(movies,4)
+                    };
+                    // console.log(tplData)
+                    masterPage.render.listContent(tplData);
+                    //显示分页
+                    laypage({
+                        cont: 'pageNation', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+                        pages: res.data.pageCount, //通过后台拿到的总页数
+                        curr: curr || 1, //当前页
+                        skin: 'yahei',
+                        groups: 7, //连续显示分页数
+                        jump: function(obj, first){ //触发分页后的回调
+                            if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+                                masterPage.ajax.getMoviesByPage(genreId,obj.curr);
+                            }
+                        }
+                    });
+                });
             },
             //获取所有的电影
             getAllMovies : function(){
@@ -78,16 +104,37 @@ define(function (require, exports, module) {
                 });
                 $.ajaxSetup({async: true});
                 return movie
+            },
+            getMoviesByPage : function (curr) {
+                $.getJSON(service.Movies.getMoviesByPage(), {
+                    page: curr || 1 //向服务端传的参数，此处只是演示
+                }, function(res){
+                    let movies = res.data.currentPageMovies;
+                    let tplData = {
+                        moviesRows:masterPage.fun.chunk(movies,4)
+                    };
+                    // console.log(tplData)
+                    masterPage.render.listContent(tplData);
+                    //显示分页
+                    laypage({
+                        cont: 'pageNation', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+                        pages: res.data.pageCount, //通过后台拿到的总页数
+                        curr: curr || 1, //当前页
+                        skin: 'yahei',
+                        groups: 7, //连续显示分页数
+                        jump: function(obj, first){ //触发分页后的回调
+                            if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+                                masterPage.ajax.getMoviesByPage(obj.curr);
+                            }
+                        }
+                    });
+                });
             }
         },
         render:{
             init:function () {
                 masterPage.render.navContent();
-                let movies = masterPage.ajax.getAllMovies();
-                let tplData = {
-                    moviesRows:masterPage.fun.chunk(movies,4)
-                };
-                masterPage.render.listContent(tplData);
+                masterPage.ajax.getMoviesByPage();
             },
             navContent : function () {
                 let allGenreData = masterPage.ajax.getAllGenreData();
@@ -114,12 +161,7 @@ define(function (require, exports, module) {
                 $(document).on('click','.genreItem',function (e) {
                     let elem = $(e.target);
                     let genreId = elem.attr("data-navId");
-                    let movies = masterPage.ajax.getMoviesByGenreId(genreId);
-                    let tplData = {
-                        moviesRows:masterPage.fun.chunk(movies,4)
-                    };
-                    // console.log(tplData)
-                    masterPage.render.listContent(tplData);
+                    masterPage.ajax.getPagedMoviesByGenreId(genreId,1);
                 });
                 //监听movieItem
                 $(document).on('click','.movieItem',function (e) {
@@ -173,7 +215,7 @@ define(function (require, exports, module) {
                     }else {
                         layer.msg("没找到!", {icon: 5});
                     }
-                })
+                });
             }
         },
         fun:{

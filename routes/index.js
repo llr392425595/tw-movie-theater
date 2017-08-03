@@ -2,7 +2,26 @@
 const express = require('express');
 const router = express.Router();
 
-//获取所有电影(分页)-----"movies"
+
+//获取电影(分页)
+router.get('/movies/page', function(req, res) {
+    let currentPage = req.query.page;
+    req.models.movie.find(function (err, movies) {
+        if (err) {
+            res.send(err)
+        }
+        let len = movies.length;
+        let pageCount = Math.ceil(len/8);
+        let currentPageMovies = movies.slice(8*(currentPage-1),8*(currentPage-1)+8);
+        let curPageData = {
+            pageCount,
+            currentPageMovies,
+        };
+        res.status(200).json({data:curPageData});
+        res.end()
+    })
+});
+//获取所有电影-----"movies"
 router.get('/movies', function(req, res) {
     req.models.movie.find(function (err, movies) {
         if (err) {
@@ -30,14 +49,16 @@ router.get('/movies/id/:id', function(req, res) {
         res.status(200).json({data:movies})
     })
 });
-//根据分类id查询电影----"movies/genre/?genreId="
+//根据分类id查询电影并分页
 router.get('/movies/genre/:genre_id', function(req, res) {
-    req.models.genre.find({id: req.params.genre_id}, function(err, genre) {
+    let genre_id = req.params.genre_id;
+    let currentPage = req.query.page;
+    req.models.genre.find({id: genre_id}, function(err, genre) {
         if (err) {
             res.send(err)
-        }
-        let genreId = genre[0].id;
-        req.models.movieGenre.find({genre_id: genreId}, function(err, movies) {
+        }else {
+            let genreId = genre[0].id;
+            req.models.movieGenre.find({genre_id: genreId}, function(err, movies) {
                 if (err) {
                     res.send(err)
                 }
@@ -48,10 +69,24 @@ router.get('/movies/genre/:genre_id', function(req, res) {
                     if (err) {
                         res.send(err)
                     }
-                    res.status(200).json({data:movies})
+                    if(currentPage){
+                        let len = movies.length;
+                        let pageCount = Math.ceil(len/8);
+                        let currentPageMovies = movies.slice(8*(currentPage-1),8*(currentPage-1)+8);
+                        let curPageData = {
+                            pageCount,
+                            currentPageMovies,
+                        };
+                        res.status(200).json({data:curPageData});
+                        res.end()
+                    }else {
+                        res.status(200).json({data:movies})
+                    }
+
                 })
-            }
-        )
+            })
+        }
+
     })
 });
 //查询所有的类别----"genres"
