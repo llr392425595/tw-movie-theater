@@ -9,7 +9,11 @@ define(function (require, exports, module) {
             },
             //根据电影名字查询电影信息(模糊)
             getMovieByName : function (movieName) {
-                return service.root + "movies/?movieName=" + movieName
+                return service.root + "movies/title/?movieName=" + movieName
+            },
+            //根据电影名字查询电影信息
+            getMovieById : function (movieId) {
+                return service.root + "movies/id/?movieId=" + movieId
             },
             //根据分类id查询电影
             getMoviesByGenreId : function (genreId) {
@@ -23,7 +27,7 @@ define(function (require, exports, module) {
             },
             //根据id查类别
             getGenreById : function (genreId) {
-                return service.root + "genres?genreId=" + genreId
+                return service.root + "genres/?genreId=" + genreId
             },
             //查询某电影的类别
             getGenreByMovieId : function (movieId) {

@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const orm = require('orm');
 app.use(orm.express(`sqlite://${appRoot}/public/db/movies.db`, {
     define: function (db, models, next) {
-        models.Movies = db.define('movie', {
+        models.movie = db.define('movie', {
             id : Number,
             alt : String,
             year : Number,
@@ -39,12 +39,12 @@ app.use(orm.express(`sqlite://${appRoot}/public/db/movies.db`, {
             image : String
         });
 
-        models.Genre = db.define('genre',{
+        models.genre = db.define('genre',{
             id : Number,
             name : String
         });
 
-        models.Movie_Genre = db.define('genre',{
+        models.movieGenre = db.define('movie_genre',{
             id : Number,
             movie_id : Number,
             genre_id : Number,
