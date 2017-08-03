@@ -18,18 +18,24 @@
     display: block;
     text-align: center;
 }
-.moviesBox a.movieItem p{
+
+.moviesBox .row div{
+    text-align: center;
+}
+
+.moviesBox .row div p{
     font-size:18px;
     color:gray;
     margin-top:10px;
     margin-left:-10px
 }
-.moviesBox a.movieItem p span{
+.moviesBox .row div p span{
     color:orange
 }
 
 .moviesBox a.movieItem img{
-    width:200px
+    width:200px;
+    height: 300px;
 }
 
 .pageNation{
@@ -45,3 +51,4 @@
     height: 300px!important;
     margin: auto
 }
+
