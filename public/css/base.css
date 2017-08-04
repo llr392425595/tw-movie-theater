@@ -30,6 +30,7 @@ a {
 }
 
 a.green.button {
+    z-index: 1000;
     -webkit-animation-name: greenPulse;
     -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: infinite;
