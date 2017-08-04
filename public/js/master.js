@@ -272,6 +272,8 @@ define(function (require, exports, module) {
                         let numStr = hash.slice(index+1);
                         let movieId = parseInt(numStr);
                         masterPage.render.detailContent(movieId);
+                        //window.scrollTo(0,0);
+                        $("html,body").animate({scrollTop:'0px'},300);
                     }
                 });
             }

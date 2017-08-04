@@ -307,7 +307,7 @@
         <div class="lickMovies">
             {{each likeMovies as movie}}
                 <div class="col-md-3 col-sm-6">
-                    <a data-movieId="{{movie.id}}" class="movieItem" href="javascript:void(0)">
+                    <a data-movieId="{{movie.id}}" class="movieItem" href="#movie/{{movie.id}}">
                         <img  src="{{movie.image}}" alt="movie.title">
                     </a>
                     <p class="title">［{{movie.year}}］{{movie.title}} <span class="score">{{movie.rating}}分</span></p>
