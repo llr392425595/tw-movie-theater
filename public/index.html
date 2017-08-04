@@ -29,8 +29,6 @@
     <link rel="stylesheet" href="css/main.css">
     <script src="js/navagation.js"></script>
 
-
-
 </head>
 <body>
     <div class="container">
@@ -94,7 +92,7 @@
                     {{each navData as nav i}}
                     {{if i<16}}
                     <li class="main-menu-item menu-item-depth-0 menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item">
-                        <a  data-navId="{{nav.id}}" href="#nav{{nav.id}}" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
+                        <a  data-navId="{{nav.id}}" href="#nav/{{nav.id}}" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
                     </li>
                     {{/if}}
                     {{/each}}
@@ -107,7 +105,7 @@
                             {{each navData as nav i}}
                             {{if i>=16}}
                             <li class="main-menu-item menu-item-depth-0 menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item">
-                                <a  data-navId="{{nav.id}}" href="#nav{{nav.id}}" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
+                                <a  data-navId="{{nav.id}}" href="#nav/{{nav.id}}" class="genreItem menu-link  main-menu-link">{{nav.name}}</a>
                             </li>
                             {{/if}}
                             {{/each}}
@@ -201,7 +199,11 @@
             <div class="col-md-6" >
                 <p><strong>电影名称：</strong>{{movie.title}}</p>
                 <p><strong>上映时间：</strong>{{movie.year}}</p>
-                <p><strong>类型：</strong>{{genre.name}}</p>
+                <p><strong>类型：</strong>
+                    {{each genresData as genre i}}
+                        {{genre.name}}/
+                    {{/each}}
+                </p>
                 <p><strong>片长：</strong><span>???</span>分钟</p>
                 <p><strong>导演：</strong>{{movie.directors}}</p>
                 <p><strong>领衔主演：</strong>{{movie.casts}}</p>
