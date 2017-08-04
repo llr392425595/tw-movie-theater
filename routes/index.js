@@ -1,7 +1,7 @@
 "use strict";
 const express = require('express');
 const router = express.Router();
-
+const orm = require('orm');
 
 //获取电影(分页)
 router.get('/movies/page', function(req, res) {
@@ -31,14 +31,26 @@ router.get('/movies', function(req, res) {
         res.end()
     })
 });
-//根据电影名字查询电影信息(模糊)----"movies/?movieName="
+//根据电影名字查询电影信息(模糊)(分页)
 router.get('/movies/title/:title', function(req, res) {
-    req.models.movie.find({title: decodeURIComponent(req.params.title)}, function(err, movies) {
-        if (err) {
-            res.send(err)
+    let title=req.params.title;
+    let currentPage = req.query.page;
+    req.models.movie.find({title:orm.like("%"+title+"%")}, function(err, movies) {
+        if (err) throw err;
+        if(currentPage){
+            let len = movies.length;
+            let pageCount = Math.ceil(len/8);
+            let currentPageMovies = movies.slice(8*(currentPage-1),8*(currentPage-1)+8);
+            let curPageData = {
+                pageCount,
+                currentPageMovies,
+            };
+            res.status(200).json({data:curPageData});
+            res.end()
+        }else {
+            res.status(200).json({data:movies})
         }
-        res.status(200).json({data:movies})
-    })
+    });
 });
 //根据电影id查询电影信息
 router.get('/movies/id/:id', function(req, res) {
